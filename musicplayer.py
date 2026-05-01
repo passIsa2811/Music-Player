@@ -76,6 +76,13 @@ def main(page: ft.Page):
         await audio.play()
         updateSongInfo()
 
+    async def returnAudio(e):
+        nonlocal index
+        index = (index - 1) % len(playlist)
+        audio.src = playlist[index]["audio"]
+        await audio.play()
+        updateSongInfo()
+
     async def getSongPosition(e=None):
         position = await audio.get_current_position()
         positionText.value = f"{position.minutes:02}:{position.seconds:02}"
@@ -90,6 +97,7 @@ def main(page: ft.Page):
     pauseButton = ft.Button("Pause", on_click=pauseAudio)
     resumeButton = ft.Button("Resume", on_click=resumeAudio)
     skipButton = ft.Button("Skip", on_click=skipAudio)
+    returnButton = ft.Button ("Return", on_click=returnAudio)
 
     volumeSlider = ft.Slider(min=0, max=100, value=100, divisions=100, on_change=changeVolume)
 
@@ -104,6 +112,7 @@ def main(page: ft.Page):
         resumeButton,
         skipButton,
         volumeSlider,
+        returnButton
     )
 
     updateSongInfo()
